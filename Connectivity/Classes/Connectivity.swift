@@ -142,6 +142,9 @@ public class Connectivity: NSObject {
         sessionConfiguration.requestCachePolicy = .reloadIgnoringCacheData
         sessionConfiguration.timeoutIntervalForRequest = 5.0
         sessionConfiguration.timeoutIntervalForResource = 5.0
+        if #available(iOS 11, *, *) {
+            sessionConfiguration.multipathServiceType = .interactive
+        }
         return sessionConfiguration
     }()
     
