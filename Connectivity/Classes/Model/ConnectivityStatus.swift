@@ -7,14 +7,15 @@
 
 import Foundation
 
-public enum ConnectivityStatus: CustomStringConvertible {
+@objc public enum ConnectivityStatus: Int, CustomStringConvertible {
     case connected, // where a connection is present but the interface cannot be determined.
-    connectedViaCellular,
-    connectedViaCellularWithoutInternet,
-    connectedViaWiFi,
-    connectedViaWiFiWithoutInternet,
-    notConnected
-    
+        connectedViaCellular,
+        connectedViaCellularWithoutInternet,
+        connectedViaWiFi,
+        connectedViaWiFiWithoutInternet,
+        determining,
+        notConnected
+
     public var description: String {
         switch self {
         case .connected:
@@ -27,6 +28,8 @@ public enum ConnectivityStatus: CustomStringConvertible {
             return "Wi-Fi with Internet access"
         case .connectedViaWiFiWithoutInternet:
             return "Wi-Fi without Internet access"
+        case .determining:
+            return "Connectivity checks pending"
         case .notConnected:
             return "No Connection"
         }

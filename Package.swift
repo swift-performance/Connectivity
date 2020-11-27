@@ -1,11 +1,12 @@
-// swift-tools-version:5.0
+// swift-tools-version:5.1
 import PackageDescription
 
 let package = Package(
     name: "Connectivity",
     platforms: [
-        .iOS("8.3"),
-        .tvOS(.v9)
+        .iOS(.v9),
+        .tvOS(.v9),
+        .macOS(.v10_10)
     ],
     products: [
         .library(

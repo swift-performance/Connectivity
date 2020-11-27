@@ -5,8 +5,9 @@
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/c3041fef8e33cc4d00df/maintainability)](https://codeclimate.com/github/rwbutler/Connectivity/maintainability)
 [![License](https://img.shields.io/cocoapods/l/Connectivity.svg?style=flat)](http://cocoapods.org/pods/Connectivity)
-[![Platform](https://img.shields.io/cocoapods/p/Connectivity.svg?style=flat)](http://cocoapods.org/pods/Connectivity)
-[![Swift 5.0](https://img.shields.io/badge/Swift-5.0-orange.svg?style=flat)](https://swift.org/)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Frwbutler%2FConnectivity%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/rwbutler/Connectivity)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Frwbutler%2FConnectivity%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/rwbutler/Connectivity)
+[![Twitter](https://img.shields.io/badge/twitter-@ross_w_butler-blue.svg?style=flat)](https://twitter.com/ross_w_butler)
 [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
 
 Connectivity is a wrapper for Apple's [Reachability](https://developer.apple.com/library/content/samplecode/Reachability/Introduction/Intro.html) providing a reliable measure of whether Internet connectivity is available where Reachability alone can only indicate whether _an interface is available that might allow a connection_.
@@ -16,21 +17,25 @@ Connectivity's objective is to solve the captive portal problem whereby an iOS d
 To learn more about how to use Connectivity, take a look at the [keynote presentation](https://github.com/rwbutler/Connectivity/blob/master/docs/presentations/connectivity.pdf), check out the [blog post](https://medium.com/@rwbutler/solving-the-captive-portal-problem-on-ios-9a53ba2b381e), or make use of the table of contents below:
 
 - [Features](#features)
-- [What's New in Connectivity 3.0.0?](#whats-new-in-connectivity-300)
-- [What's New in Connectivity 2.0.0?](#whats-new-in-connectivity-200)
+- [What's New in Connectivity 5.0.0?](#whats-new-in-connectivity-500)
+- [What's New in Connectivity 4.0.0?](#whats-new-in-connectivity-400)
+- [Hyperconnectivity](#hyperconnectivity)
 - [Installation](#installation)
 	- [Cocoapods](#cocoapods)
 	- [Carthage](#carthage)
+	- [Swift Package Manager](#swift-package-manager)
 - [How It Works](#how-it-works)
 - [Usage](#usage)
 	- [Callbacks](#callbacks)
 	- [One-Off Checks](#one-off-checks)
 	- [Connectivity URLs](#connectivity-urls)
+	- [Network Framework](#network-framework)
 	- [Notifications](#notifications)
 	- [Polling](#polling)
 	- [SSL](#ssl)
 	- [Threshold](#threshold)
 	- [Response Validation](#response-validation)
+- [Known Issues](#known-issues)
 - [Author](#author)
 - [License](#license)
 - [Additional Software](#additional-software)
@@ -44,34 +49,35 @@ To learn more about how to use Connectivity, take a look at the [keynote present
 - [x] Be notified of changes in Internet connectivity.
 - [x] Polling connectivity checks may be performed where a constant network connection is required (optional).
 
-## What's new in Connectivity 3.0.0?
+## What's new in Connectivity 5.0.0?
 
-Connectivity 3.0.0 brings support for Swift 5.0. The previous version supporting Swift 4.2 is version 2.2.1.
+Connectivity 5.0.0 provides support for Xcode 12 and raises the minimum deployment target to iOS 9 (dropping support for iOS 8).
 
-If you require the Swift 4.2 version then in your `Podfile`:
+## What's new in Connectivity 4.0.0?
+
+Connectivity 4.0.0 adds [`Connectivity.Publisher`](https://github.com/rwbutler/Connectivity/blob/master/Connectivity/Classes/Combine/ConnectivityPublisher.swift) enabling Connectivity to be used with Apple's [Combine](https://developer.apple.com/documentation/combine) framework. For more information see the example using Combine in the sample app.
+
+If you require the previous version then in your `Podfile` set:
 
 ```ruby
-pod "Connectivity" "~> 2.0" 
+pod "Connectivity" "~> 3.0" 
 ```
 
 Or if you are using Carthage add the following to your `Cartfile`:
 
 ```ogdl
-github "rwbutler/Connectivity" ~> 2.2.1
+github "rwbutler/Connectivity" ~> 3.0
 ```
 
-## What's new in Connectivity 2.0.0?
+## Hyperconnectivity
 
-Connectivity 2.0.0 provides the option of using the new `Network` framework on iOS 12 and above. To make use of this functionality set the `framework` property to `.network` as follows:
+If you don't require support for Objective-C or versions of iOS prior to iOS 13 then you may want to consider using [Hyperconnectivity](https://github.com/rwbutler/Hyperconnectivity) (an offshoot project of Connectivity), which drops support for these in favour of a modern, elegant syntax. For a comparison of the two frameworks see [here](https://github.com/rwbutler/Hyperconnectivity#connectivity-vs-hyperconnectivity).
 
-```swift
-let connectivity = Connectivity()
-connectivity.framework = .network
-```
+<br/>
+<div align="center">
+    <a href="https://github.com/rwbutler/Hyperconnectivity"><img src="https://github.com/rwbutler/Hyperconnectivity/raw/master/docs/images/hyperconnectivity-logo.png" alt="Xcode 11 Package Options" height="100" width="100"></a>
+</div>
 
-Below iOS 12, Connectivity will default to the traditional behaviour of using `Reachability` to determine the availability of network interfaces.
-
-For more information, refer to [CHANGELOG.md](CHANGELOG.md).
 
 ## Installation
 
@@ -120,6 +126,28 @@ From the macOS Terminal run `carthage update --platform iOS` to build the framew
 
 For more information [see here](https://github.com/Carthage/Carthage#quick-start).
 
+### Swift Package Manager
+
+Xcode 11 includes support for [Swift Package Manager](https://swift.org/package-manager/). In order to add Connectivity to your project in Xcode 11, from the `File` menu select `Swift Packages` and then select `Add Package Dependency`.
+
+A dialogue will request the package repository URL which is:
+
+```
+https://github.com/rwbutler/connectivity
+```
+
+After verifying the URL, Xcode will prompt you to select whether to pull a specific branch, commit or versioned release into your project. 
+
+<div align="center">
+    <img src="https://github.com/rwbutler/Connectivity/raw/master/docs/images/package-options.png" alt="Xcode 11 Package Options" width="80%">
+</div>
+
+Proceed to the next step by where you will be asked to select the package product to integrate into a target. There will be a single package product named `Connectivity` which should be pre-selected. Ensure that your main app target is selected from the rightmost column of the dialog then click Finish to complete the integration.
+
+<div align="center">
+    <img src="https://github.com/rwbutler/Connectivity/raw/master/docs/images/add-package.png" alt="Xcode 11 Add Package" width="80%">
+</div>
+
 ## How It Works
 
 iOS adopts a protocol called Wireless Internet Service Provider roaming ([WISPr 2.0](https://www.wballiance.com/glossary/)) published by the [Wireless Broadband Alliance](https://www.wballiance.com/). This protocol defines the Smart Client to Access Gateway interface describing how to authenticate users accessing public IEEE 802.11 (Wi-Fi) networks using the [Universal Access Method](https://en.wikipedia.org/wiki/Universal_access_method) in which a captive portal presents a login page to the user. 
@@ -150,7 +178,7 @@ Connectivity is an open-source framework which wraps Reachability and endeavours
 
 Connectivity provides an interface as close to Reachability as possible so that it is familiar to developers used to working with Reachability. This includes providing the methods `startNotifier()` and `stopNotifier()` to begin checking for changes in Internet connectivity. Once the notifier has been started, you may query for the current connectivity status synchronously using the `status` property (similar to Reachability’s `currentReachabilityStatus`) or asynchronously by registering as an observer with the default NotificationCenter for the notification `kNetworkConnectivityChangedNotification` (in Swift this is accessed through `Notification.Name.ConnectivityDidChange`) — similar to Reachability’s notification `kNetworkReachabilityChangedNotification`.
 
-By default, Connectivity contacts a number of endpoints already used by iOS but it recommended that these are supplemented by endpoints hosted by the developer by appending to the `connectivityURLs` property. Further customization is possible through setting the `successThreshold` property which determines the percentage of endpoints contacted which must result in a successful check in order to conclude that connectivity is present. The default value specifies that 75% of URLs contacted must result in a successful connectivity check.
+By default, Connectivity contacts a number of endpoints already used by iOS but it recommended that these are replaced (or at least supplemented) by endpoints hosted by the developer by appending to the `connectivityURLs` property. Further customization is possible through setting the `successThreshold` property which determines the percentage of endpoints contacted which must result in a successful check in order to conclude that connectivity is present. The default value specifies that 50% of URLs contacted must result in a successful connectivity check. This is because two connectivity URLs are provided be default so only one of the two connectivity checks needs to succeed - should you require more stringent checks then consider increasing this threshold.
 
 ## Usage
 
@@ -239,6 +267,19 @@ It is possible to set the URLs which will be contacted to check connectivity via
 connectivity.connectivityURLs = [URL(string: "https://www.apple.com/library/test/success.html")!]
 ```
 
+### Network Framework
+
+From version 2.0.0, Connectivity provides the option of using the new `Network` framework where a device is running iOS 12 or above. To make use of this functionality set the `framework` property to `.network` (the default value is `.systemConfiguration`) as follows:
+
+```swift
+let connectivity = Connectivity()
+connectivity.framework = .network
+```
+
+Below iOS 12, Connectivity will default to the traditional behaviour of using `Reachability` (SystemConfiguration.framework) to determine the availability of network interfaces.
+
+For more information, refer to [CHANGELOG.md](CHANGELOG.md).
+
 ### Notifications
 
 If you prefer using notifications to observe changes in connectivity, you may add an observer on the default NotificationCenter:
@@ -249,7 +290,7 @@ Listening for `Notification.Name.ConnectivityDidChange`, the `object` property o
 
 ### Polling
 
-In certain cases you may need to be kept constantly apprised of changes in connectivity state and therefore may wish to enable polling. Where enabled, Connectivity will not wait on changes in Reachability state but will poll the connectivity URLs every 10 seconds (this value is configurable). `ConnectivityDidChange` notifications and the closures assigned to the `whenConnected` and `whenDisconnected` properties will be invoked only where changes in connectivity state occur.
+In certain cases you may need to be kept constantly apprised of changes in connectivity state and therefore may wish to enable polling. Where enabled, Connectivity will not wait on changes in Reachability state but will poll the connectivity URLs every 10 seconds (this value is configurable by setting the value of the `pollingInterval` property). `ConnectivityDidChange` notifications and the closures assigned to the `whenConnected` and `whenDisconnected` properties will be invoked only where changes in connectivity state occur.
 
 To enable polling:
 
@@ -285,6 +326,23 @@ There are three different validation modes available for checking response conte
 - `.containsExpectedResponseString` - Checks that the response *contains* the expected response as defined by the `expectedResponseString` property. 
 - `.equalsExpectedResponseString` - Checks that the response *equals* the expected response as defined by the `expectedResponseString` property. 
 - `.matchesRegularExpression` - Checks that the response matches the regular expression as defined by the `expectedResponseRegEx` property.
+- `.custom` - Allows a custom response validator to be set. If this validation mode is specified, then an implementation of `ConnectivityResponseValidator` protocol must be supplied as the value of the `responseValidator` property on the `Connectivity` object.
+
+Supplied validators include:
+
+- `ConnectivityResponseStringEqualityValidator`: Determines whether the response string is equal to an expected string.
+- `ConnectivityResponseContainsStringValidator`: Determines whether the response string contains an expected string.
+- `ConnectivityResponseRegExValidator`: Determines whether the response string matches a given regular expression.
+
+## Known Issues
+
+### Caller responsible for retaining the `Connectivity` object
+
+Please ensure that any implementation making use of this framework holds a strong reference to the `Connectivity` object for the duration of its use (as an instance variable or otherwise). If the object is deallocated before the callback is invoked, the result will be non-deterministic.
+
+### Simulator issues
+
+Before reporting a bug please ensure that you have tested on a physical device as on simulator changes in network adapter state are not reported correctly by iOS frameworks particularly when transitioning from a disconnected -> connected state. This behaviour functions correctly on a physical device. Setting `pollWhileOfflineOnly = true` should resolve this issue.
 
 ## Author
 
@@ -309,17 +367,20 @@ Connectivity is available under the MIT license. See the [LICENSE file](./LICENS
 * [Cheats](https://github.com/rwbutler/Cheats) - Retro cheat codes for modern iOS apps.
 * [Connectivity](https://github.com/rwbutler/Connectivity) - Improves on Reachability for determining Internet connectivity in your iOS application.
 * [FeatureFlags](https://github.com/rwbutler/FeatureFlags) - Allows developers to configure feature flags, run multiple A/B or MVT tests using a bundled / remotely-hosted JSON configuration file.
+* [FlexibleRowHeightGridLayout](https://github.com/rwbutler/FlexibleRowHeightGridLayout) - A UICollectionView grid layout designed to support Dynamic Type by allowing the height of each row to size to fit content.
+* [Hyperconnectivity](https://github.com/rwbutler/Hyperconnectivity) - Modern replacement for Apple's Reachability written in Swift and made elegant using Combine. An offshoot of the [Connectivity](https://github.com/rwbutler/Connectivity) framework.
 * [Skylark](https://github.com/rwbutler/Skylark) - Fully Swift BDD testing framework for writing Cucumber scenarios using Gherkin syntax.
 * [TailorSwift](https://github.com/rwbutler/TailorSwift) - A collection of useful Swift Core Library / Foundation framework extensions.
 * [TypographyKit](https://github.com/rwbutler/TypographyKit) - Consistent & accessible visual styling on iOS with Dynamic Type support.
 * [Updates](https://github.com/rwbutler/Updates) - Automatically detects app updates and gently prompts users to update.
 
-|[Cheats](https://github.com/rwbutler/Cheats) |[Connectivity](https://github.com/rwbutler/Connectivity) | [FeatureFlags](https://github.com/rwbutler/FeatureFlags) | [Skylark](https://github.com/rwbutler/Skylark) | [TypographyKit](https://github.com/rwbutler/TypographyKit) | [Updates](https://github.com/rwbutler/Updates) |
-|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|
-|[![Cheats](https://raw.githubusercontent.com/rwbutler/Cheats/master/docs/images/cheats-logo.png)](https://github.com/rwbutler/Cheats) |[![Connectivity](https://github.com/rwbutler/Connectivity/raw/master/ConnectivityLogo.png)](https://github.com/rwbutler/Connectivity) | [![FeatureFlags](https://raw.githubusercontent.com/rwbutler/FeatureFlags/master/docs/images/feature-flags-logo.png)](https://github.com/rwbutler/FeatureFlags) | [![Skylark](https://github.com/rwbutler/Skylark/raw/master/SkylarkLogo.png)](https://github.com/rwbutler/Skylark) | [![TypographyKit](https://raw.githubusercontent.com/rwbutler/TypographyKit/master/docs/images/typography-kit-logo.png)](https://github.com/rwbutler/TypographyKit) | [![Updates](https://raw.githubusercontent.com/rwbutler/Updates/master/docs/images/updates-logo.png)](https://github.com/rwbutler/Updates)
+|[Cheats](https://github.com/rwbutler/Cheats) |[Connectivity](https://github.com/rwbutler/Connectivity) | [FeatureFlags](https://github.com/rwbutler/FeatureFlags) | [Hyperconnectivity](https://github.com/rwbutler/Hyperconnectivity) | [Skylark](https://github.com/rwbutler/Skylark) | [TypographyKit](https://github.com/rwbutler/TypographyKit) | [Updates](https://github.com/rwbutler/Updates) |
+|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|
+|[![Cheats](https://raw.githubusercontent.com/rwbutler/Cheats/master/docs/images/cheats-logo.png)](https://github.com/rwbutler/Cheats) |[![Connectivity](https://github.com/rwbutler/Connectivity/raw/master/ConnectivityLogo.png)](https://github.com/rwbutler/Connectivity) | [![FeatureFlags](https://raw.githubusercontent.com/rwbutler/FeatureFlags/master/docs/images/feature-flags-logo.png)](https://github.com/rwbutler/FeatureFlags) | [![Hyperconnectivity](https://raw.githubusercontent.com/rwbutler/Hyperconnectivity/master/docs/images/hyperconnectivity-logo.png)](https://github.com/rwbutler/Hyperconnectivity) | [![Skylark](https://github.com/rwbutler/Skylark/raw/master/SkylarkLogo.png)](https://github.com/rwbutler/Skylark) | [![TypographyKit](https://raw.githubusercontent.com/rwbutler/TypographyKit/master/docs/images/typography-kit-logo.png)](https://github.com/rwbutler/TypographyKit) | [![Updates](https://raw.githubusercontent.com/rwbutler/Updates/master/docs/images/updates-logo.png)](https://github.com/rwbutler/Updates)
 
 ### Tools
 
+* [Clear DerivedData](https://github.com/rwbutler/ClearDerivedData) - Utility to quickly clear your DerivedData directory simply by typing `cdd` from the Terminal.
 * [Config Validator](https://github.com/rwbutler/ConfigValidator) - Config Validator validates & uploads your configuration files and cache clears your CDN as part of your CI process.
 * [IPA Uploader](https://github.com/rwbutler/IPAUploader) - Uploads your apps to TestFlight & App Store.
 * [Palette](https://github.com/rwbutler/TypographyKitPalette) - Makes your [TypographyKit](https://github.com/rwbutler/TypographyKit) color palette available in Xcode Interface Builder.
